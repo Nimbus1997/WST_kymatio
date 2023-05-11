@@ -1,4 +1,11 @@
 # modify 2
+# 2023.05.08
+# # 2) subsameple fourier사용을 줄이고, low pass filter를 사용 X
+# - pad는 J만큼, unpad는 -2만큼 됨. (subsample_forier로 size를 반씩 줄여와서 -2만 하면 됐음)  
+#     하지만, 그래서 subsample fourier와 low pass filter를 모두 없애면, size 때문에 문제가 생김  
+# - 그래서 pad와 unpad를 모두 없애면, filter의 크기는 image에 pad를 한 것과 크기를 맞춰났기때문에 문제가 생김.  
+# - (2)번 방법 사용함 -- (1) filter를 원래 input size로 맞추거나[], (2) pad를 원래대로 사용하고, subsample도 사용하고, low pass filter만 사용하지 않는 방향으로.[V]
+
 def scattering2d(x, pad, unpad, backend, J, L, phi, psi, max_order,
         out_type='array'):
     subsample_fourier = backend.subsample_fourier

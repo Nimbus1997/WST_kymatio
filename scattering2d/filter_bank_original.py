@@ -1,8 +1,4 @@
-# modi 1
-# date: 2023.05.09
-# what change?
-# - make only one psi per j (no res difference)
-
+# original (with just some annotations added)
 import numpy as np
 from scipy.fft import fft2, ifft2
 
@@ -43,9 +39,8 @@ def filter_bank(M, N, J, L=8):
             psi_signal_fourier = np.real(fft2(psi_signal))
             # drop the imaginary part, it is zero anyway
             psi_levels = []
-            # for res in range(min(j + 1, max(J - 1, 1))): # J=1,2 -> 1 // J=3 -> 2
-            #     psi_levels.append(periodize_filter_fft(psi_signal_fourier, res))
-            psi_levels.append(periodize_filter_fft(psi_signal_fourier, 0))  # changed! 
+            for res in range(min(j + 1, max(J - 1, 1))): # J=1,2 -> 1 // J=3 -> 2
+                psi_levels.append(periodize_filter_fft(psi_signal_fourier, res))
             psi['levels'] = psi_levels
             filters['psi'].append(psi)
 

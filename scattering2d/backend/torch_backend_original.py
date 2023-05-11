@@ -155,7 +155,7 @@ class TorchBackend2D(TorchBackend):
         return _ifft(x)
 
     @staticmethod
-    def unpad(in_, k):
+    def unpad(in_):
         """Unpads input.
 
             Slices the input tensor at indices between 1:-1.
@@ -171,7 +171,7 @@ class TorchBackend2D(TorchBackend):
                 Output tensor.  Unpadded input.
 
         """
-        in_ = in_[..., k:-k, k:-k, :]  #change ! 
+        in_ = in_[..., 1:-1, 1:-1, :]
         in_ = in_.reshape(in_.shape[:-1])
         return in_
 

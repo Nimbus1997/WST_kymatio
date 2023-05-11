@@ -1,4 +1,8 @@
 # modify 1
+# 2023.05.07
+# 1) 각 order마다 subsample_fourier의 k를 수정함 (scattering2d_modi.py)
+# => 결과 : 정확히 딱딱 맞게 수정은 안했지만, k를 바꿔도 image가 일그러지지 않는다는 것 확인 완료 + 각 order마다 다른 shape(W,H)로 출력 가능
+
 def scattering2d(x, pad, unpad, backend, J, L, phi, psi, max_order,
         out_type='array'):
     subsample_fourier = backend.subsample_fourier

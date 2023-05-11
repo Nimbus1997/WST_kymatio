@@ -1,9 +1,3 @@
-# modi1
-# date: 2023.05.11
-# ellen
-# what change?
-# 1. out_type = "ellen_array 추가"
-
 import torch
 
 from .base_frontend import ScatteringBase2D
@@ -91,15 +85,12 @@ class ScatteringTorch2D(ScatteringTorch, ScatteringBase2D):
         if (input.shape[-1] != self._N_padded or input.shape[-2] != self._M_padded) and self.pre_pad:
             raise RuntimeError('Padded tensor must be of spatial size (%i,%i).' % (self._M_padded, self._N_padded))
 
-        if not self.out_type in ('array', 'list',"ellen_array"): # (change) added ! 
+        if not self.out_type in ('array', 'list'):
             raise RuntimeError("The out_type must be one of 'array' or 'list'.")
 
         phi, psi = self.load_filters()
 
-        if self.out_type == "ellen_array":
-            batch_shape = input.shape[:-3]
-        else: 
-            batch_shape = input.shape[:-2]
+        batch_shape = input.shape[:-2]
         signal_shape = input.shape[-2:]
 
         input = input.reshape((-1,) + signal_shape)
@@ -110,24 +101,13 @@ class ScatteringTorch2D(ScatteringTorch, ScatteringBase2D):
         if self.out_type == 'array':
             scattering_shape = S.shape[-3:]
             S = S.reshape(batch_shape + scattering_shape)
+        # else:
+        #     scattering_shape = S[0]['coef'].shape[-2:]
+        #     new_shape = batch_shape + scattering_shape
 
-        elif self.out_type ==  "list":
-            # scattering_shape = S[0]['coef'].shape[-2:]
-            # new_shape = batch_shape + scattering_shape
-            for x in S:
-                scattering_shape = x['coef'].shape[-2:] # (change) added ! 
-                new_shape = batch_shape + scattering_shape # (change) added ! 
-                x['coef'] = x['coef'].reshape(new_shape)
+        #     for x in S:
+        #         x['coef'] = x['coef'].reshape(new_shape)
 
-        elif self.out_type == "ellen_array":  # (change) added !
-            # print(batch_shape)
-            for i in range(len(S)):
-                scattering_shape = S[i].shape[-2:] 
-                new_shape = batch_shape +(-1,)+ scattering_shape 
-                # print(new_shape)
-                S[i] = S[i].reshape(new_shape)
-                # print(S[i].shape)
-            
         return S
 
 
